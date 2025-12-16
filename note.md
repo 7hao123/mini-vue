@@ -14,3 +14,5 @@ jest 默认是 commonjs 所以会执行失败
 package.json type module 什么意思？？
 唯一作用是定义当前项目 / 目录下 .js 文件的模块系统类型，决定 Node.js 如何解析 .js 文件的模块语法（ES 模块 vs CommonJS），同时也会影响 TypeScript、打包工具（Vite/Webpack）等对模块的识别逻辑。
 ts 中不能够以 ts 为结尾
+
+TDD 中的三个动作 第一个是先写一个测试 第二个是让测试通过 第三部是重构
