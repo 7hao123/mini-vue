@@ -1,4 +1,8 @@
-import { mutableHandlers, readonlyHandlers } from "./baseHandler";
+import {
+  mutableHandlers,
+  readonlyHandlers,
+  shallowReadonlyHandlers,
+} from "./baseHandler";
 export function reactive(raw) {
   return createActiveObject(raw, mutableHandlers);
 }
@@ -16,6 +20,10 @@ export function isReactive(value) {
   // 这里会触发get
   // 需要转换成boolean类型,因为如果不是响应式对象会undefined
   return !!value[ReactiveFlags.IS_REACTIVE];
+}
+
+export function shallowReadonly(value) {
+  return createActiveObject(value, shallowReadonlyHandlers);
 }
 
 export function isReadonly(value) {
