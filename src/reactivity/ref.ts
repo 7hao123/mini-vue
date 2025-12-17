@@ -2,6 +2,10 @@ import { hasChanged, isObject } from "../shared";
 import { trackEffects, isTracking, triggerEffects } from "./effect";
 import { reactive } from "./reactive";
 
+// ref接收的是是值
+// 由于proxy只能接收对象  proxy->object
+// 所以用一个对象来包裹  里面有value  来写get 和set
+
 class RefImpl {
   private _value;
   private _rawValue;
