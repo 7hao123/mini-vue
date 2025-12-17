@@ -10,6 +10,7 @@ class RefImpl {
   private _value;
   private _rawValue;
   public dep;
+  public __v_isRef = true;
   constructor(value) {
     // 判断是否是对象，如果是对象的话，需要转成响应式
     this._rawValue = value;
@@ -35,6 +36,10 @@ class RefImpl {
   }
 }
 
+function convert(value) {
+  return isObject(value) ? reactive(value) : value;
+}
+
 function trackRefValue(ref) {
   if (isTracking()) {
     trackEffects(ref.dep);
@@ -46,6 +51,10 @@ export function ref(value) {
   return new RefImpl(value);
 }
 
-function convert(value) {
-  return isObject(value) ? reactive(value) : value;
+export function isRef(ref) {
+  return !!ref.__v_isRef;
+}
+
+export function unRef(ref) {
+  return isRef(ref) ? ref.value : ref;
 }
