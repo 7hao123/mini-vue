@@ -78,7 +78,9 @@ describe("effect", () => {
     expect(dummy).toBe(2);
 
     stop(runner);
-    obj.prop = 3;
+    // obj.prop = 3;
+    // 之前这种只有set,现在既有get也有set我们之前是去除依赖了，现在又重新收集了
+    obj.prop++;
     expect(dummy).toBe(2);
 
     runner();
