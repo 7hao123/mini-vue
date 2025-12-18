@@ -24,3 +24,6 @@ component 的主流程
 if(component) mountComponent 抽象一个 component instance(里面有 props,slots 等等)
 之前后 setupComponent(initProps,initSlots,setupStatefulComponent)  
 之后嗲用 render 拿到虚拟节点树（subTree）之后去调用 pathch
+
+打包的时候，如果是 cjs 就会去找 main
+如果是 esm 就会去找 module
