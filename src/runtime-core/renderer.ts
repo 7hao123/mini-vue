@@ -1,11 +1,13 @@
 import { createComponentInstance, setupComponent } from "./component";
 
 export function render(vnode, container) {
-  // patch  为什么要patch
   patch(vnode, container);
 }
 
 function patch(vnode, container) {
+  // TODO  判断vnode是不是一个element
+  // 是element那应该处理element
+  processElement(vnode, container);
   processComponent(vnode, container);
 }
 

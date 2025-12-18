@@ -1,3 +1,4 @@
+import { h } from "../../lib/guide-mini-vue.esm.js";
 export const App = {
   // template需要有编译能力，所以目前先写render函数
   render() {
