@@ -18,3 +18,9 @@ ts 中不能够以 ts 为结尾
 TDD 中的三个动作 第一个是先写一个测试 第二个是让测试通过 第三部是重构 4 看看有没有优化点
 
 自顶向下去实现 先写函数再去具体实现
+
+component 的主流程
+先去嗲用 render patch 判断虚拟节点类型，判断是 component 还是 element 类型
+if(component) mountComponent 抽象一个 component instance(里面有 props,slots 等等)
+之前后 setupComponent(initProps,initSlots,setupStatefulComponent)  
+之后嗲用 render 拿到虚拟节点树（subTree）之后去调用 pathch
