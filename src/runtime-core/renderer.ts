@@ -21,6 +21,7 @@ function processElement(vnode, container) {
 }
 
 function mountElement(vnode, container) {
+  // 创建一个element全过程
   // const el = document.createElement("div");
   // el.textContent = "hi mini-vue";
   // el.setAttribute("id", "root");
@@ -53,14 +54,16 @@ function processComponent(vnode, container) {
 }
 
 function mountComponent(vnode, container) {
-  debugger;
   const instance = createComponentInstance(vnode);
   setupComponent(instance);
   setupRenderEffect(instance, container);
 }
 
 function setupRenderEffect(instance, container) {
-  const subTree = instance.render();
+  const { proxy } = instance;
+  // const subTree = instance.render();
+  // 将proxy绑定到render上
+  const subTree = instance.render.call(proxy);
   // vnode -> patch
   // vnode -> element -> mountElement
   patch(subTree, container);
