@@ -10,6 +10,9 @@ export const App = {
       {
         id: "root",
         class: ["red", "hard"],
+        onClick() {
+          console.log("click");
+        },
       },
       // 这里是string
       // 想要拿到代理对象，就要将setup的返回值绑定到render的this上
