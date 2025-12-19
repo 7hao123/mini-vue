@@ -53,13 +53,13 @@ function processComponent(vnode, container) {
   mountComponent(vnode, container);
 }
 
-function mountComponent(vnode, container) {
-  const instance = createComponentInstance(vnode);
+function mountComponent(initialVnode, container) {
+  const instance = createComponentInstance(initialVnode);
   setupComponent(instance);
-  setupRenderEffect(instance, vnode, container);
+  setupRenderEffect(instance, initialVnode, container);
 }
 
-function setupRenderEffect(instance, vnode, container) {
+function setupRenderEffect(instance, initialVnode, container) {
   const { proxy } = instance;
   // const subTree = instance.render();
   // 将proxy绑定到render上
@@ -69,5 +69,5 @@ function setupRenderEffect(instance, vnode, container) {
   patch(subTree, container);
 
   // 所有的element 都mount之后
-  vnode.el = subTree.el;
+  initialVnode.el = subTree.el;
 }
