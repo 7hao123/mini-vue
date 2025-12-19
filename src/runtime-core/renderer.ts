@@ -26,7 +26,7 @@ function mountElement(vnode, container) {
   // el.textContent = "hi mini-vue";
   // el.setAttribute("id", "root");
   // document.body.appendChild(el);
-  const el = document.createElement(vnode.type);
+  const el = (vnode.el = document.createElement(vnode.type));
   // stinrg array
   const { children } = vnode;
   if (typeof children === "string") {
@@ -56,10 +56,10 @@ function processComponent(vnode, container) {
 function mountComponent(vnode, container) {
   const instance = createComponentInstance(vnode);
   setupComponent(instance);
-  setupRenderEffect(instance, container);
+  setupRenderEffect(instance, vnode, container);
 }
 
-function setupRenderEffect(instance, container) {
+function setupRenderEffect(instance, vnode, container) {
   const { proxy } = instance;
   // const subTree = instance.render();
   // 将proxy绑定到render上
@@ -67,4 +67,7 @@ function setupRenderEffect(instance, container) {
   // vnode -> patch
   // vnode -> element -> mountElement
   patch(subTree, container);
+
+  // 所有的element 都mount之后
+  vnode.el = subTree.el;
 }
