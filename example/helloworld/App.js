@@ -1,4 +1,5 @@
 import { h } from "../../lib/guide-mini-vue.esm.js";
+import { Foo } from "./Foo.js";
 window.self = null;
 export const App = {
   // template需要有编译能力，所以目前先写render函数
@@ -14,11 +15,12 @@ export const App = {
           console.log("click");
         },
       },
+      [h("div", {}, "hi" + this.msg), h(Foo, { count: 1 })]
       // 这里是string
       // 想要拿到代理对象，就要将setup的返回值绑定到render的this上
       // 除此之外还需要$el等其他属性
       // 所以采用proxy模式
-      "hello" + this.msg
+      // "hello" + this.msg
       // 这里是array
       // [h("p", { class: "red" }, "hi"), h("p", { class: "blue" }, "mini-vue")]
     );

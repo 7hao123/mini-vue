@@ -1,3 +1,4 @@
+import { initProps } from "./componentProps";
 import { PublicInstanceProxyHandlers } from "./componentPublicInstance";
 
 export function createComponentInstance(vnode) {
@@ -6,13 +7,14 @@ export function createComponentInstance(vnode) {
     type: vnode.type,
     setupState: {},
     el: null,
+    props: {},
   };
   return component;
 }
 
 export function setupComponent(instance) {
   // TODO
-  // initProps()
+  initProps(instance, instance.vnode.props);
   // initSlots()
   setupStatefulComponent(instance);
 }
@@ -26,7 +28,7 @@ export function setupStatefulComponent(instance) {
   const { setup } = Component;
   if (setup) {
     // 可能返回function或者object
-    const setupResult = setup();
+    const setupResult = setup(instance.props);
     handleSetupResult(instance, setupResult);
   }
 }
