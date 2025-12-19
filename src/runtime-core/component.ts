@@ -1,3 +1,4 @@
+import { shallowReadonly } from "../reactivity/reactive";
 import { initProps } from "./componentProps";
 import { PublicInstanceProxyHandlers } from "./componentPublicInstance";
 
@@ -28,7 +29,7 @@ export function setupStatefulComponent(instance) {
   const { setup } = Component;
   if (setup) {
     // 可能返回function或者object
-    const setupResult = setup(instance.props);
+    const setupResult = setup(shallowReadonly(instance.props));
     handleSetupResult(instance, setupResult);
   }
 }
