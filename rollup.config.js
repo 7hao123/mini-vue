@@ -1,6 +1,6 @@
 // rollup天生支持esm
 import typescript from "@rollup/plugin-typescript";
-import pkg from "./package.json";
+import pkg from "./package.json" with { type: "json" };
 export default {
   input: "./src/index.ts",
   output: [

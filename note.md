@@ -27,3 +27,6 @@ if(component) mountComponent 抽象一个 component instance(里面有 props,slo
 
 打包的时候，如果是 cjs 就会去找 main
 如果是 esm 就会去找 module
+
+// TPP
+// 先去写一个特定的行为-> 重构成通用的
