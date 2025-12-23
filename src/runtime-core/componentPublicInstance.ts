@@ -1,5 +1,7 @@
 const publicPropertisMap = {
   $el: (i) => i.vnode.el,
+  // $slots
+  $slots: (i) => i.slots,
 };
 
 export const PublicInstanceProxyHandlers = {
