@@ -1,4 +1,4 @@
-import { h } from "../../lib/guide-mini-vue.esm.js";
+import { h, createTextVNode } from "../../lib/guide-mini-vue.esm.js";
 import { Foo } from "./Foo.js";
 export const App = {
   name: "App",
@@ -11,14 +11,17 @@ export const App = {
       Foo,
       {},
       // {
-      //   // 这里是具名插槽？？
+      //   // 这里是具名插槽
       //   header: h("p", {}, "header"),
       //   footer: h("p", {}, "456"),
       // }
       {
-        // 这里是具名插槽？？
-        header: (age) => h("p", {}, "header", age),
-        footer: h("p", {}, "456"),
+        // 直接写text是不行的
+        header: ({ age }) => [
+          h("p", {}, "header" + age),
+          createTextVNode("你好呀"),
+        ],
+        footer: () => h("p", {}, "456"),
       }
     );
     return h("div", {}, [app, foo]);

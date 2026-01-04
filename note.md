@@ -30,3 +30,5 @@ if(component) mountComponent 抽象一个 component instance(里面有 props,slo
 
 // TPP
 // 先去写一个特定的行为-> 重构成通用的
+
+像我们平常写的 template 或者 jsx 都是通过编译来生成对应的 createTextVnode ,renderSlots 这些
