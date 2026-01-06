@@ -38,10 +38,13 @@ export function setupStatefulComponent(instance) {
 
   const { setup } = Component;
   if (setup) {
+    setCurrentInstance(instance);
     // 可能返回function或者object
     const setupResult = setup(shallowReadonly(instance.props), {
       emit: instance.emit,
     });
+    // 清空？？？
+    setCurrentInstance(null);
     handleSetupResult(instance, setupResult);
   }
 }
@@ -58,4 +61,14 @@ function finishComponentSetup(instance) {
   // if (Component.render) {
   instance.render = Component.render;
   // }
+}
+let currentInstance = null;
+
+export function getCurrentInstance() {
+  return currentInstance;
+}
+
+export function setCurrentInstance(instance) {
+  // 可以方便跟踪
+  currentInstance = instance;
 }
