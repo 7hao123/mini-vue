@@ -6,7 +6,15 @@ const Provider = {
     provide("bar", "barVal");
   },
   render() {
-    return h("div", {}, [h("div", {}, "Provider"), h(Consumer)]);
+    return h("div", {}, [h("div", {}, "Provider"), h(ProviderTwo)]);
+  },
+};
+
+const ProviderTwo = {
+  name: "ProviderTwo",
+  setup() {},
+  render() {
+    return h("div", {}, [h("div", {}, "ProviderTwo"), h(Consumer)]);
   },
 };
 
