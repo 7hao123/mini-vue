@@ -6,7 +6,7 @@ import { createAppApi } from "./createApp";
 import { Fragment, Text } from "./vnode";
 
 export function createRenderer(options) {
-  const { createElement, patchProp, insert } = options;
+  const { createElement, patchProp: hostPatchProp, insert } = options;
   function render(vnode, container) {
     patch(null, vnode, container, null);
   }
@@ -56,11 +56,41 @@ export function createRenderer(options) {
       patchElement(n1, n2, container);
     }
   }
-
+  const EMPTY_OBJ = {};
   function patchElement(n1, n2, container) {
     console.log("patchElement");
     console.log("n1", n1);
     console.log("n2", n2);
+    // 更新element,先更新props
+    // 1,foo之前的值和现在的值不一样了（修改）foo->foo-new
+    // 2.之前的值现在变成了null||undefined（删除） foo->null
+    // 3.bar这个属性在新的prop里面没有了  （删除）
+
+    const oldProps = n1.props || EMPTY_OBJ;
+    const newProps = n2.props || EMPTY_OBJ;
+
+    const el = (n2.el = n1.el);
+
+    patchProps(el, oldProps, newProps);
+  }
+
+  function patchProps(el, oldProps, newProps) {
+    if (oldProps !== newProps) {
+      for (const key in newProps) {
+        const prevProp = oldProps[key];
+        const nextProp = newProps[key];
+        if (prevProp !== nextProp) {
+          hostPatchProp(el, key, prevProp, nextProp);
+        }
+      }
+      if (oldProps !== EMPTY_OBJ) {
+        for (const key in oldProps) {
+          if (!(key in newProps)) {
+            hostPatchProp(el, key, oldProps[key], null);
+          }
+        }
+      }
+    }
   }
 
   function mountElement(vnode, container, parentComponent) {
@@ -97,8 +127,7 @@ export function createRenderer(options) {
       // //   el.addEventListener("click", val);
       // // }
       // el.setAttribute(key, val);
-      patchProp(el, key, val);
-      console.log(key);
+      hostPatchProp(el, key, null, val);
     }
     // container.append(el);
     insert(el, container);
