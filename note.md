@@ -34,3 +34,28 @@ if(component) mountComponent 抽象一个 component instance(里面有 props,slo
 像我们平常写的 template 或者 jsx 都是通过编译来生成对应的 createTextVnode ,renderSlots 这些
 
 provide/inject 中学到的思想，先实现一层，然后再去实现多层的，防止过度设计
+
+更新过程 
+patchProp
+    // 情况1: 值改变 - foo 从 "foo" 变为 "new-foo"
+    const onChangePropsDemo1 = () => {
+      props.value.foo = "new-foo";
+    };
+
+    // 情况2: 值变为 undefined - foo 设为 undefined
+    const onChangePropsDemo2 = () => {
+      props.value.foo = undefined;
+    };
+
+    // 情况3: 属性删除 - 删除 bar 属性
+    const onChangePropsDemo3 = () => {
+      props.value = {
+        foo: "foo",
+        // bar 被删除了
+      };
+    };
+patchChildren
+text->text   // 2.老的是文本 新的还是文本 直接更新文本内容
+text->array    // 3.老的是文本 新的是数组 清空文本 挂载children
+array->text   // 1.老的是数组 新的是文本 把老的children清空 设置为文本
+array->array
