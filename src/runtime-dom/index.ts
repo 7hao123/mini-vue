@@ -17,8 +17,10 @@ function patchProp(el, key, prevVal, nextVal) {
   }
 }
 
-function insert(el, parent) {
-  parent.append(el);
+function insert(child, parent, anchor) {
+  // parent.append(el);
+  // 由于diff算法需要加到前面，所以不能append了
+  parent.insertBefore(child, anchor || null);
 }
 
 function remove(child) {
