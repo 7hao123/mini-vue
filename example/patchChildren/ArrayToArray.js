@@ -35,13 +35,13 @@ import { ref, h } from "../../lib/guide-mini-vue.esm.js";
 //   h("p", { key: "C" }, "C"),
 // ];
 //4、新的比老的长 右侧相同
-const prevChildren = [h("p", { key: "A" }, "A"), h("p", { key: "B" }, "B")];
-const nextChildren = [
-  h("p", { key: "D" }, "D"),
-  h("p", { key: "C" }, "C"),
-  h("p", { key: "A" }, "A"),
-  h("p", { key: "B" }, "B"),
-];
+// const prevChildren = [h("p", { key: "A" }, "A"), h("p", { key: "B" }, "B")];
+// const nextChildren = [
+//   h("p", { key: "D" }, "D"),
+//   h("p", { key: "C" }, "C"),
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+// ];
 //5、新的比老的短 删除 左侧相同
 // const prevChildren = [
 //   h("p", { key: "A" }, "A"),
@@ -57,22 +57,25 @@ const nextChildren = [
 // ];
 // const nextChildren = [h("p", { key: "B" }, "B"), h("p", { key: "C" }, "C")];
 //7、对比中间的部分
-/* const prevChildren = [
-    h("p",{key:'A'},'A'),
-    h("p",{key:'B'},'B'),
-    h("p",{key:'C',id:'prev-c'},'C'),
-    h("p",{key:'D'},'D'),
-    h("p",{key:'F'},'F'),
-    h("p",{key:'G'},'G'),
-]
+//  a b (c d)  f g
+//  a b (e c)  f g
+// 删除d修改c
+const prevChildren = [
+  h("p", { key: "A" }, "A"),
+  h("p", { key: "B" }, "B"),
+  h("p", { key: "C", id: "prev-c" }, "C"),
+  h("p", { key: "D" }, "D"),
+  h("p", { key: "F" }, "F"),
+  h("p", { key: "G" }, "G"),
+];
 const nextChildren = [
-    h("p",{key:'A'},'A'),
-    h("p",{key:'B'},'B'),
-    h("p",{key:'E'},'E'),
-    h("p",{key:'C',id:'next-c'},'C'),
-    h("p",{key:'F'},'F'),
-    h("p",{key:'G'},'G'),
-] */
+  h("p", { key: "A" }, "A"),
+  h("p", { key: "B" }, "B"),
+  h("p", { key: "E" }, "E"),
+  h("p", { key: "C", id: "next-c" }, "C"),
+  h("p", { key: "F" }, "F"),
+  h("p", { key: "G" }, "G"),
+];
 //8、老的比新的长
 /* const prevChildren = [
     h("p",{key:'A'},'A'),
