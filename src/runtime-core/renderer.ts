@@ -174,8 +174,8 @@ export function createRenderer(options) {
       let s2 = i; //老节点的开始
       const toBePatched = e2 - s2 + 1;
       let patched = 0;
+      // 构建新节点的map
       const keyToNewIndexMap = new Map();
-
       for (let i = s2; i <= e2; i++) {
         const nextChild = c2[i];
         keyToNewIndexMap.set(nextChild.key, i);
@@ -184,10 +184,12 @@ export function createRenderer(options) {
       for (let i = s1; i <= e1; i++) {
         const prevChild = c1[i];
         if (patched >= toBePatched) {
+          //优化多余的节点
           hostRemove(prevChild.el);
           continue;
         }
         let newIndex;
+        // 寻找老节点在在新里面的位置，有key
         if (prevChild.key !== null) {
           newIndex = keyToNewIndexMap.get(prevChild.key);
         } else {
