@@ -60,22 +60,22 @@ import { ref, h } from "../../lib/guide-mini-vue.esm.js";
 //  a b (c d)  f g
 //  a b (e c)  f g
 // 删除d修改c
-const prevChildren = [
-  h("p", { key: "A" }, "A"),
-  h("p", { key: "B" }, "B"),
-  h("p", { key: "C", id: "prev-c" }, "C"),
-  h("p", { key: "D" }, "D"),
-  h("p", { key: "F" }, "F"),
-  h("p", { key: "G" }, "G"),
-];
-const nextChildren = [
-  h("p", { key: "A" }, "A"),
-  h("p", { key: "B" }, "B"),
-  h("p", { key: "E" }, "E"),
-  h("p", { key: "C", id: "next-c" }, "C"),
-  h("p", { key: "F" }, "F"),
-  h("p", { key: "G" }, "G"),
-];
+// const prevChildren = [
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", { key: "C", id: "prev-c" }, "C"),
+//   h("p", { key: "D" }, "D"),
+//   h("p", { key: "F" }, "F"),
+//   h("p", { key: "G" }, "G"),
+// ];
+// const nextChildren = [
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", { key: "E" }, "E"),
+//   h("p", { key: "C", id: "next-c" }, "C"),
+//   h("p", { key: "F" }, "F"),
+//   h("p", { key: "G" }, "G"),
+// ];
 //8、老的比新的长
 /* const prevChildren = [
     h("p",{key:'A'},'A'),
@@ -95,61 +95,67 @@ const nextChildren = [
     h("p",{key:'G'},'G'),
 ] */
 //9、最长递增子序列
-/* const prevChildren = [
-    h("p",{key:'A'},'A'),
-    h("p",{key:'B'},'B'),
-    h("p",{key:'C'},'C'),
-    h("p",{key:'D'},'D'),
-    h("p",{key:'E'},'E'),
-    h("p",{key:'F'},'F'),
-    h("p",{key:'G'},'G'),
-]
+// a b (cde) fg
+// a b (ecd) fg
+// const prevChildren = [
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", { key: "C" }, "C"),
+//   h("p", { key: "D" }, "D"),
+//   h("p", { key: "E" }, "E"),
+//   h("p", { key: "F" }, "F"),
+//   h("p", { key: "G" }, "G"),
+// ];
+// const nextChildren = [
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", { key: "E" }, "E"),
+//   h("p", { key: "C" }, "C"),
+//   h("p", { key: "D" }, "D"),
+//   h("p", { key: "F" }, "F"),
+//   h("p", { key: "G" }, "G"),
+// ];
+// 创建新的节点
+//  a,b,(c,e),f,g
+//  a,b,(e,c,d),f,g
+// const prevChildren = [
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", { key: "C" }, "C"),
+//   h("p", { key: "E" }, "E"),
+//   h("p", { key: "F" }, "F"),
+//   h("p", { key: "G" }, "G"),
+// ];
+// const nextChildren = [
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", { key: "E" }, "E"),
+//   h("p", { key: "C" }, "C"),
+//   h("p", { key: "D" }, "D"),
+//   h("p", { key: "F" }, "F"),
+//   h("p", { key: "G" }, "G"),
+// ];
+// 综合例子
+const prevChildren = [
+  h("p", { key: "A" }, "A"),
+  h("p", { key: "B" }, "B"),
+  h("p", { key: "C" }, "C"),
+  h("p", { key: "D" }, "D"),
+  h("p", { key: "E" }, "E"),
+  h("p", { key: "Z" }, "Z"),
+  h("p", { key: "F" }, "F"),
+  h("p", { key: "G" }, "G"),
+];
 const nextChildren = [
-    h("p",{key:'A'},'A'),
-    h("p",{key:'B'},'B'),
-    h("p",{key:'E'},'E'),
-    h("p",{key:'C'},'C'),
-    h("p",{key:'D'},'D'),
-    h("p",{key:'F'},'F'),
-    h("p",{key:'G'},'G'),
-]  */
-/* const prevChildren = [
-    h("p",{key:'A'},'A'),
-    h("p",{key:'B'},'B'),
-    h("p",{key:'C'},'C'),
-    h("p",{key:'E'},'E'),
-    h("p",{key:'F'},'F'),
-    h("p",{key:'G'},'G'),
-]
-const nextChildren = [
-    h("p",{key:'A'},'A'),
-    h("p",{key:'B'},'B'),
-    h("p",{key:'E'},'E'),
-    h("p",{key:'C'},'C'),
-    h("p",{key:'D'},'D'),
-    h("p",{key:'F'},'F'),
-    h("p",{key:'G'},'G'),
-]  */
-/* const prevChildren = [
-    h("p",{key:'A'},'A'),
-    h("p",{key:'B'},'B'),
-    h("p",{key:'C'},'C'),
-    h("p",{key:'D'},'D'),
-    h("p",{key:'E'},'E'),
-    h("p",{key:'Z'},'Z'),
-    h("p",{key:'F'},'F'),
-    h("p",{key:'G'},'G'),
-]
-const nextChildren = [
-    h("p",{key:'A'},'A'),
-    h("p",{key:'B'},'B'),
-    h("p",{key:'D'},'D'),
-    h("p",{key:'C'},'C'),
-    h("p",{key:'Y'},'Y'),
-    h("p",{key:'E'},'E'),
-    h("p",{key:'F'},'F'),
-    h("p",{key:'G'},'G'),
-]  */
+  h("p", { key: "A" }, "A"),
+  h("p", { key: "B" }, "B"),
+  h("p", { key: "D" }, "D"),
+  h("p", { key: "C" }, "C"),
+  h("p", { key: "Y" }, "Y"),
+  h("p", { key: "E" }, "E"),
+  h("p", { key: "F" }, "F"),
+  h("p", { key: "G" }, "G"),
+];
 //fix
 // const prevChildren = [
 //     h("p",{key:'A'},'A'),
