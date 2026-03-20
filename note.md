@@ -75,3 +75,11 @@ array->array
 
 组件的更新逻辑
 首先是更新props，调用组件的render函数（利用effect返回的render） 更新的时候监测是否需要更新
+
+
+nextTick vue3视图更新全是异步的  
+
+
+编译模块概述
+
+首先template 经过parser生成ast语法树，然后经过transform，进行增删改查，生成ast语法树，最后经过codegen生成对应的代码（render）
