@@ -5,6 +5,7 @@ import { createComponentInstance, setupComponent } from "./component";
 import { createAppApi } from "./createApp";
 import { Fragment, Text } from "./vnode";
 import { shouldUpdateComponent } from "./componentUpdateUtils";
+import { queueJobs } from "./scheduler";
 
 export function createRenderer(options) {
   const {
@@ -352,39 +353,47 @@ export function createRenderer(options) {
   }
 
   function setupRenderEffect(instance, initialVnode, container, anchor) {
-    instance.update = effect(() => {
-      if (!instance.isMounted) {
-        console.log("init");
-        const { proxy } = instance;
-        // const subTree = instance.render();
-        // 将proxy绑定到render上
-        const subTree = (instance.subTree = instance.render.call(proxy));
-        console.log(subTree);
-        // vnode -> patch
-        // vnode -> element -> mountElement
-        // 如果是patch的话会出现三个节点，因为每次都会重新挂在
-        patch(null, subTree, container, instance, anchor);
+    instance.update = effect(
+      () => {
+        if (!instance.isMounted) {
+          console.log("init");
+          const { proxy } = instance;
+          // const subTree = instance.render();
+          // 将proxy绑定到render上
+          const subTree = (instance.subTree = instance.render.call(proxy));
+          console.log(subTree);
+          // vnode -> patch
+          // vnode -> element -> mountElement
+          // 如果是patch的话会出现三个节点，因为每次都会重新挂在
+          patch(null, subTree, container, instance, anchor);
 
-        // 所有的element 都mount之后
-        initialVnode.el = subTree.el;
-        instance.isMounted = true;
-      } else {
-        console.log("update");
-        const { next, vnode } = instance;
-        if (next) {
-          next.el = vnode.el;
-          updateComponentPreRender(instance, next);
+          // 所有的element 都mount之后
+          initialVnode.el = subTree.el;
+          instance.isMounted = true;
+        } else {
+          console.log("update");
+          const { next, vnode } = instance;
+          if (next) {
+            next.el = vnode.el;
+            updateComponentPreRender(instance, next);
+          }
+          const { proxy } = instance;
+          const subTree = instance.render.call(proxy);
+          const prevSubTree = instance.subTree;
+          instance.subTree = subTree;
+
+          console.log("current", subTree);
+          console.log("prev", prevSubTree);
+          patch(prevSubTree, subTree, container, instance, anchor);
         }
-        const { proxy } = instance;
-        const subTree = instance.render.call(proxy);
-        const prevSubTree = instance.subTree;
-        instance.subTree = subTree;
-
-        console.log("current", subTree);
-        console.log("prev", prevSubTree);
-        patch(prevSubTree, subTree, container, instance, anchor);
-      }
-    });
+      },
+      {
+        scheduler() {
+          console.log("scheduler");
+          queueJobs(instance.update);
+        },
+      },
+    );
   }
 
   return {
