@@ -23,6 +23,9 @@ function parseChildren(context: any) {
       node = parseElement(context);
     }
   }
+  if (!node) {
+    node = parseText(context);
+  }
   nodes.push(node);
   return nodes;
 }
@@ -88,5 +91,16 @@ function createRoot(children: any) {
 function createParserContext(content: string) {
   return {
     source: content,
+  };
+}
+function parseText(context: any): any {
+  // 1.获取Content
+  const content = context.source.slice(0, context.source.length);
+  advanceBy(context, content.length);
+  console.log("content", content, "-----------", context.source);
+  // 2.推进
+  return {
+    type: NodeTypes.TEXT,
+    content: content,
   };
 }
