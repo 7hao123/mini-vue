@@ -7,35 +7,65 @@ const enum TagType {
 
 export function baseParse(content: string) {
   const context = createParserContext(content);
-  return createRoot(parseChildren(context));
+  return createRoot(parseChildren(context, []));
 }
 
-function parseChildren(context: any) {
+function parseChildren(context: any, ancestors) {
   const nodes: any = [];
-  let node;
-  const s = context.source;
-  console.log("context.source", context.source);
-  if (s.startsWith("{{")) {
-    node = parseInterpolation(context);
-  } else if (s[0] === "<") {
-    // 解析元素
-    if (/[a-z]/i.test(s[1])) {
-      node = parseElement(context);
+  while (!isEnd(context, ancestors)) {
+    let node;
+    const s = context.source;
+    console.log("context.source", context.source);
+    if (s.startsWith("{{")) {
+      node = parseInterpolation(context);
+    } else if (s[0] === "<") {
+      // 解析元素
+      if (/[a-z]/i.test(s[1])) {
+        node = parseElement(context, ancestors);
+      }
     }
+    if (!node) {
+      node = parseText(context);
+    }
+    nodes.push(node);
   }
-  if (!node) {
-    node = parseText(context);
-  }
-  nodes.push(node);
+
   return nodes;
 }
 
-function parseElement(context: any) {
+function isEnd(context: any, ancestors) {
+  // 1.当遇到结束标签时，停止解析
+  const s = context.source;
+  if (s.startsWith("</")) {
+    for (let i = ancestors.length - 1; i >= 0; i--) {
+      const tag = ancestors[i];
+      if (startsWithEndTagOpen(s, tag)) {
+        return true;
+      }
+    }
+  }
+  // 2.source有值的时候
+  return !context.source;
+}
+
+function startsWithEndTagOpen(source: string, tag: string) {
+  return source.slice(2, 2 + tag.length).toLowerCase() === tag.toLowerCase();
+}
+
+function parseElement(context: any, ancestors) {
   // 1.解析tag
   // 2.删除解析过的代码
   const element: any = parseTag(context, TagType.Start);
-  parseTag(context, TagType.End);
-  console.log("element", element, "-----------", context.source);
+  ancestors.push(element.tag);
+  element.children = parseChildren(context, ancestors);
+  ancestors.pop();
+  // 如果对不上的话，消费的标签不对
+
+  if (startsWithEndTagOpen(context.source, element.tag)) {
+    parseTag(context, TagType.End);
+  } else {
+    throw new Error(`缺少结束标签:${element.tag}`);
+  }
   return element;
 }
 
@@ -94,8 +124,23 @@ function createParserContext(content: string) {
   };
 }
 function parseText(context: any): any {
+  let endTokens = ["<", "{{"];
+  let endIndex = context.source.length;
+  let endToken;
+  for (let i = 0; i < endTokens.length; i++) {
+    const index = context.source.indexOf(endTokens[i]);
+    if (index !== -1 && index < endIndex) {
+      endIndex = index;
+      endToken = endTokens[i];
+    }
+  }
+
+  const index = context.source.indexOf(endToken);
+  if (index !== -1) {
+    endIndex = index;
+  }
   // 1.获取Content
-  const content = context.source.slice(0, context.source.length);
+  const content = context.source.slice(0, endIndex);
   advanceBy(context, content.length);
   console.log("content", content, "-----------", context.source);
   // 2.推进
